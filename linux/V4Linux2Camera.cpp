@@ -53,7 +53,7 @@ bool V4Linux2Camera::initCamera() {
         if ((config.compress) && (fmtdesc.pixelformat==V4L2_PIX_FMT_MJPEG)) {
             v4l2_form.fmt.pix.pixelformat = fmtdesc.pixelformat;
             break;
-        } else if (!(config.compress) && ((fmtdesc.pixelformat==V4L2_PIX_FMT_YUYV) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUYV) || (fmtdesc.pixelformat==V4L2_PIX_FMT_UYVY) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUV420) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUV410))) {
+        } else if (!(config.compress) && ((fmtdesc.pixelformat==V4L2_PIX_FMT_YUYV) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUYV) || (fmtdesc.pixelformat==V4L2_PIX_FMT_UYVY) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUV420) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUV410) || (fmtdesc.pixelformat==V4L2_PIX_FMT_GREY))) {
             v4l2_form.fmt.pix.pixelformat = fmtdesc.pixelformat;
             break;
         }
@@ -295,7 +295,7 @@ bool V4Linux2Camera::findCamera() {
         if ((fmtdesc.flags & V4L2_FMT_FLAG_COMPRESSED) && (fmtdesc.pixelformat==V4L2_PIX_FMT_MJPEG)) {
             valid_compressed_format = true;
             //printf("got compressed format\n");
-        } else if (!(fmtdesc.flags & V4L2_FMT_FLAG_COMPRESSED) && ((fmtdesc.pixelformat==V4L2_PIX_FMT_YUYV) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUYV) || (fmtdesc.pixelformat==V4L2_PIX_FMT_UYVY) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUV420) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUV410))) {
+        } else if (!(fmtdesc.flags & V4L2_FMT_FLAG_COMPRESSED) && ((fmtdesc.pixelformat==V4L2_PIX_FMT_YUYV) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUYV) || (fmtdesc.pixelformat==V4L2_PIX_FMT_UYVY) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUV420) || (fmtdesc.pixelformat==V4L2_PIX_FMT_YUV410) || (fmtdesc.pixelformat==V4L2_PIX_FMT_GREY))) {
             valid_uncompressed_format = true;
             //printf("got uncompressed format\n");
         }
@@ -418,6 +418,7 @@ unsigned char* V4Linux2Camera::getFrame()  {
             else if (pixelformat==V4L2_PIX_FMT_UYVY) uyvy2gray(cam_width, cam_height, raw_buffer, cam_buffer);
             else if (pixelformat==V4L2_PIX_FMT_YUV420) memcpy(cam_buffer,raw_buffer,cam_width*cam_height);
             else if (pixelformat==V4L2_PIX_FMT_YUV410) memcpy(cam_buffer,raw_buffer,cam_width*cam_height);
+            else if (pixelformat==V4L2_PIX_FMT_GREY) memcpy(cam_buffer,raw_buffer,cam_width*cam_height);
             else if (pixelformat==V4L2_PIX_FMT_MJPEG)  {
 
                 int jpegSubsamp;
